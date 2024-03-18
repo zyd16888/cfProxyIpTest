@@ -4,10 +4,10 @@ def add_port_to_ips(input_file_path, output_file_path, port):
     """
     从输入文件中读取IP地址，并将每个IP地址与指定端口写入到输出文件中
     """
-    with open(input_file_path, 'r') as file:
+    with open(input_file_path, 'r', encoding='utf-8') as file:
         ip_addresses = file.readlines()
 
-    with open(output_file_path, 'a') as file:
+    with open(output_file_path, 'a', encoding='utf-8') as file:
         for ip in ip_addresses:
             ip = ip.strip()  # 去除可能存在的换行符
             file.write(ip + f' {port}\n')
