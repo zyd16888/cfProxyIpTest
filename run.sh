@@ -45,7 +45,7 @@ if [ ! -d bak_baipiao ]; then
 fi
 mv baipiao.zip bak_baipiao/$(date +"%Y%m%d%H%M%S").zip
 cp baipiao.csv result_latest/baipiao.csv
-mv baipiao.csv bak_result/$(date +"%Y%m%d%H%M%S").csv
+mv baipiao.csv bak_result/$(date +"%Y%m%d%H%M%S")_baipiao.csv
 
 # 获取 proxyIP 与 rawIp
 echo "开始获取 proxyIP 与 rawIp"
@@ -55,6 +55,7 @@ wget -O raw_ip.txt https://gh.xxooo.cf/https://github.com/x-dr/iptest/blob/main/
 # 合并 proxy.txt 和 raw_ip.txt
 cat proxy.txt >> ip.txt
 cat raw_ip.txt >> ip.txt
+rm proxy.txt raw_ip.txt
 
 count=$(wc -l < ip.txt)
 echo "共获取到 $count 个IP"
@@ -71,6 +72,6 @@ if [ ! -d bak_ip ]; then
 fi
 mv ip.txt bak_ip/$(date +"%Y%m%d%H%M%S").txt
 cp ip-with-port.csv result_latest/ip-with-port.csv
-mv ip-with-port.csv bak_result/$(date +"%Y%m%d%H%M%S").csv
+mv ip-with-port.csv bak_result/$(date +"%Y%m%d%H%M%S")_ip.csv
 
 echo "任务完成"
