@@ -1,7 +1,11 @@
 import argparse
 import requests
+import os
 
-def update_gist(username, token, gist_id, file_path):
+def update_gist(token, gist_id, file_path):
+
+    filea_name = os.path.basename(file_path)
+
     # 读取本地文件内容
     with open(file_path, 'rb') as file:
         content = file.read()
@@ -18,7 +22,7 @@ def update_gist(username, token, gist_id, file_path):
     # 构建 JSON 数据
     data = {
         "files": {
-            "result.csv": {
+            filea_name: {
                 "content": content.decode('utf-8')
             }
         }
@@ -35,11 +39,10 @@ def update_gist(username, token, gist_id, file_path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update a GitHub Gist with a local file.")
-    parser.add_argument("-u", "--username", help="GitHub username", required=True)
     parser.add_argument("-t", "--token", help="GitHub access token", required=True)
     parser.add_argument("-g", "--gist_id", help="Gist ID", required=True)
     parser.add_argument("-f", "--file_path", help="Local file path", required=True)
 
     args = parser.parse_args()
 
-    update_gist(args.username, args.token, args.gist_id, args.file_path)
+    update_gist(args.token, args.gist_id, args.file_path)
