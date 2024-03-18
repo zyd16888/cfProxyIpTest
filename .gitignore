@@ -1,0 +1,3 @@
+# 忽略以 "bak" "result" 开头的目录
+bak*/
+result*/
