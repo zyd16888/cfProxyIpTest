@@ -7,7 +7,7 @@ def add_port_to_ips(input_file_path, output_file_path, port):
     with open(input_file_path, 'r') as file:
         ip_addresses = file.readlines()
 
-    with open(output_file_path, 'w') as file:
+    with open(output_file_path, 'a') as file:
         for ip in ip_addresses:
             ip = ip.strip()  # 去除可能存在的换行符
             file.write(ip + f' {port}\n')
