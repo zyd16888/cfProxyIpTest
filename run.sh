@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # 检查依赖项是否存在
 if ! command -v wget &> /dev/null; then
