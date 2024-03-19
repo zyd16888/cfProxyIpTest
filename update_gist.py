@@ -51,7 +51,7 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--token", help="GitHub access token", required=True)
     parser.add_argument("-g", "--gist_id", help="Gist ID", required=True)
     parser.add_argument("-f", "--file_path", help="Local file path", required=True)
-    parser.add_argument("-a", "--area", help="Local file name", required=False)
+    parser.add_argument("-a", "--area", help="run area name", required=False)
 
     args = parser.parse_args()
 
