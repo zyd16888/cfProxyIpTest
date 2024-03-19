@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 # 检查依赖项是否存在
 if ! command -v wget &> /dev/null; then
@@ -65,6 +65,7 @@ python3 ip-add-port.py -i ip.txt -o ip-with-port.txt -p 443 || { echo "Error: Fa
 
 # 测试 IP 地址
 ./ipTest/ipTest -file ip-with-port.txt -outfile ip-with-port.csv || { echo "Error: Failed to test IP addresses." >&2; exit 1; }
+rm ip-with-port.txt
 
 # 备份 IP 文件
 if [ ! -d bak_ip ]; then
