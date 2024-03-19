@@ -7,9 +7,9 @@ fi
 echo "开始运行脚本"
 start_time=$(date +"%Y%m%d%H%M%S")
 
-bash run.sh
+bash script/run.sh
 
-bash update_gist.sh
+bash script/update_gist.sh
 
 echo "脚本运行完成"
 end_time=$(date +"%Y%m%d%H%M%S")
