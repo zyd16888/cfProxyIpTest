@@ -1,9 +1,5 @@
 #!/usr/bin/bash
 
-if [ ! -d logs ]; then
-    mkdir logs
-fi
-
 echo "开始运行脚本"
 start_time=$(date +"%Y%m%d%H%M%S")
 

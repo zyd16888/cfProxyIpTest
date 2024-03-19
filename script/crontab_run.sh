@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
 cd /home/ubuntu/cfProxyIpTest
-echo $(date +"%Y%m%d%H%M%S") >> testfile.txt
+
+if [ ! -d logs ]; then
+    mkdir logs
+fi
+
 bash script/run_all.sh >> logs/$(date +"%Y%m%d%H%M%S").log 2>&1
