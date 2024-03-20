@@ -21,5 +21,6 @@ echo -e "$update_msg"
 # 设置环境变量
 export QYWX_AM=""
 
+send_msg="$update_msg\n\n脚本运行时间: $[$end_time-$start_time]秒"
 
-python3 sendNotify.py -t "IP测速运行结果" -c "$update_msg \n\n脚本运行时间: $[$end_time-$start_time]秒"
+python3 sendNotify.py -t "IP测速运行结果" -c "$send_msg"
