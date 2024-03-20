@@ -35,7 +35,7 @@ def update_gist(token, gist_id, file_path):
 
         # 检查响应状态码
         if response.status_code == 200:
-            print("文件已成功更新到 Gist。")
+            print(f"文件{file_name}已成功更新到 Gist。")
             return
         else:
             print(f"更新 Gist 时出错：{response.status_code} - {response.text}")
