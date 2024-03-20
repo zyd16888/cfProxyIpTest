@@ -7,6 +7,7 @@ bash script/run.sh
 
 export github_token="your github token"
 export gist_id="your gist id"
+export area=""  # 填写地区, 可选参数
 
 update_msg=$(script/update_gist.sh)
 
