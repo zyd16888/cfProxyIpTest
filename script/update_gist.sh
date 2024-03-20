@@ -23,7 +23,7 @@ if [ "$output1" == "文件已成功更新到 Gist。" ]; then
 else
     # 处理失败的情况
     # echo "更新 Gist 失败。"
-    update_msg="$update_msg\n文件 ip-with-port 更新到 Gist 失败. \n err: $output1"
+    update_msg="$update_msg\n文件 ip-with-port 更新到 Gist 失败. \n err: $output1 \n"
 fi
 
 if [ "$output2" == "文件已成功更新到 Gist。" ]; then
@@ -33,7 +33,7 @@ if [ "$output2" == "文件已成功更新到 Gist。" ]; then
 else
     # 处理失败的情况
     # echo "更新 Gist 失败。"
-    update_msg="$update_msg\n文件 baipiao 更新到 Gist 失败. \n \n $output2"
+    update_msg="$update_msg\n文件 baipiao 更新到 Gist 失败. \n err: $output2 \n"
 fi
 
 echo -e "$update_msg"
