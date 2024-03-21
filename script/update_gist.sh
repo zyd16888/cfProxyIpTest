@@ -3,8 +3,11 @@
 file_path="result_latest/ip-with-port.csv"
 file_path2="result_latest/baipiao.csv"
 
+sleep 5
 
 output2=$(python3 update_gist.py -t "$github_token" -g "$gist_id" -f "$file_path2" -a "$area")
+
+sleep 5
 
 output1=$(python3 update_gist.py -t "$github_token" -g "$gist_id" -f "$file_path" -a "$area")
 
