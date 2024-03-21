@@ -13,8 +13,15 @@ def update_gist(token, gist_id, file_path):
         file_name = file_name.replace(".", f"-{args.area}.")
 
     # 读取本地文件内容
-    with open(file_path, 'rb') as file:
-        content = file.read()
+    try:
+        with open(file_path, 'rb') as file:
+            content = file.read()
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        return
+    except Exception as e:
+        print(f"Error reading file '{file_path}': {e}")
+        return
 
     # 构建 API 请求的 URL
     url = f"https://api.github.com/gists/{gist_id}"
@@ -30,21 +37,29 @@ def update_gist(token, gist_id, file_path):
 
     retries = 0
     while retries < MAX_RETRIES:
-        # 发送 HTTP 请求
-        response = requests.patch(url, headers=headers, json=data)
-
-        # 检查响应状态码
-        if response.status_code == 200:
-            print(f"文件{file_name}已成功更新到 Gist。")
-            return
-        else:
-            print(f"更新 Gist 时出错：{response.status_code} - {response.text}")
+        try:
+            # 发送 HTTP 请求
+            response = requests.patch(url, headers=headers, json=data)
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+        except requests.exceptions.RequestException as e:
+            print(f"Error occurred during request: {e}")
             retries += 1
             if retries < MAX_RETRIES:
-                print(f"重试中... (第 {retries} 次)")
+                print(f"Retrying... (Attempt {retries})")
                 time.sleep(RETRY_DELAY)
+        else:
+            # 检查响应状态码
+            if response.status_code == 200:
+                print(f"File '{file_name}' has been successfully updated to Gist.")
+                return
             else:
-                print("达到最大重试次数，无法更新 Gist。")
+                print(f"Error updating Gist: {response.status_code} - {response.text}")
+                retries += 1
+                if retries < MAX_RETRIES:
+                    print(f"Retrying... (Attempt {retries})")
+                    time.sleep(RETRY_DELAY)
+                else:
+                    print("Reached maximum retry attempts, unable to update Gist.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Update a GitHub Gist with a local file.")
