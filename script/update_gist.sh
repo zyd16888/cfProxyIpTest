@@ -4,10 +4,9 @@ file_path="result_latest/ip-with-port.csv"
 file_path2="result_latest/baipiao.csv"
 
 
+output2=$(python3 update_gist.py -t "$github_token" -g "$gist_id" -f "$file_path2" -a "$area")
 
 output1=$(python3 update_gist.py -t "$github_token" -g "$gist_id" -f "$file_path" -a "$area")
-
-output2=$(python3 update_gist.py -t "$github_token" -g "$gist_id" -f "$file_path2" -a "$area")
 
 update_msg="$area 文件上传情况："
 
@@ -29,3 +28,4 @@ else
 fi
 
 echo -e "$update_msg"
+
