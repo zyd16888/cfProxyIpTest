@@ -11,7 +11,7 @@ def update_gist(token, gist_id, file_path):
     file_name = os.path.basename(file_path)
     if args.area:
         file_name = file_name.replace(".", f"-{args.area}.")
-    print(file_name)
+
     # 读取本地文件内容
     with open(file_path, 'rb') as file:
         content = file.read()
