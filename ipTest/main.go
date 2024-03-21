@@ -41,7 +41,8 @@ type result struct {
 	dataCenter  string        // 数据中心
 	region      string        // 地区
 	city        string        // 城市
-	countary     string        // 国家
+	countary    string        // 国家
+	iptype      string        // IP类型
 	latency     string        // 延迟
 	tcpDuration time.Duration // TCP请求延迟
 }
@@ -166,6 +167,15 @@ func main() {
 		return
 	}
 
+	// 获取客户端IP
+	publicIP, err := getClientIP()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// fmt.Printf("客户端ip %s",  publicIP)
+
 	var wg sync.WaitGroup
 	wg.Add(len(ips))
 
@@ -270,12 +280,30 @@ func main() {
 				if matches := regexp.MustCompile(`colo=([A-Z]+)`).FindStringSubmatch(string(body)); len(matches) > 1 {
 					dataCenter := matches[1]
 					loc, ok := locationMap[dataCenter]
+
+					clientIPMatch :=regexp.MustCompile(`ip=(\d+\.\d+\.\d+\.\d+)`).FindStringSubmatch(string(body))
+					// fmt.Println("clientIPMatch:", clientIPMatch)
+					var clientIP string
+					if len(clientIPMatch) > 1 {
+						clientIP = clientIPMatch[1]
+					} else {
+						clientIP = "unknown"
+					}
+
+					var ipType string
+					if clientIP == publicIP {
+						ipType = "官方"
+					} else if clientIP == ipAddr {
+						ipType = "中转"
+					} else {
+						ipType = "隧道"
+					}
 					if ok {
 						fmt.Printf("发现有效IP %s 端口 %d 位置信息 %s 延迟 %d 毫秒\n", ipAddr, port, loc.City, tcpDuration.Milliseconds())
-						resultChan <- result{ipAddr, port, dataCenter, loc.Region, loc.City, loc.Cca2, fmt.Sprintf("%d ms", tcpDuration.Milliseconds()), tcpDuration}
+						resultChan <- result{ipAddr, port, dataCenter, loc.Region, loc.City, loc.Cca2, ipType, fmt.Sprintf("%d ms", tcpDuration.Milliseconds()), tcpDuration}
 					} else {
 						fmt.Printf("发现有效IP %s 端口 %d 位置信息未知 延迟 %d 毫秒\n", ipAddr, port, tcpDuration.Milliseconds())
-						resultChan <- result{ipAddr, port, dataCenter, "", "", "", fmt.Sprintf("%d ms", tcpDuration.Milliseconds()), tcpDuration}
+						resultChan <- result{ipAddr, port, dataCenter, "", "", "", "", fmt.Sprintf("%d ms", tcpDuration.Milliseconds()), tcpDuration}
 					}
 				}
 			}
@@ -353,15 +381,15 @@ func main() {
 	}
 	writer := csv.NewWriter(file)
 	if *speedTest > 0 {
-		writer.Write([]string{"IP地址", "端口", "TLS", "数据中心", "地区", "城市", "国家", "网络延迟", "下载速度"})
+		writer.Write([]string{"IP地址", "端口", "TLS", "数据中心", "地区", "城市", "国家", "IP类型", "网络延迟", "下载速度"})
 	} else {
-		writer.Write([]string{"IP地址", "端口", "TLS", "数据中心", "地区", "城市", "国家", "网络延迟"})
+		writer.Write([]string{"IP地址", "端口", "TLS", "数据中心", "地区", "城市", "国家", "IP类型", "网络延迟"})
 	}
 	for _, res := range results {
 		if *speedTest > 0 {
-			writer.Write([]string{res.result.ip, strconv.Itoa(res.result.port), strconv.FormatBool(*enableTLS), res.result.dataCenter, res.result.region, res.result.city, res.result.countary, res.result.latency, fmt.Sprintf("%.0f kB/s", res.downloadSpeed)})
+			writer.Write([]string{res.result.ip, strconv.Itoa(res.result.port), strconv.FormatBool(*enableTLS), res.result.dataCenter, res.result.region, res.result.city, res.result.countary, res.result.iptype, res.result.latency, fmt.Sprintf("%.0f kB/s", res.downloadSpeed)})
 		} else {
-			writer.Write([]string{res.result.ip, strconv.Itoa(res.result.port), strconv.FormatBool(*enableTLS), res.result.dataCenter, res.result.region, res.result.city, res.result.countary, res.result.latency})
+			writer.Write([]string{res.result.ip, strconv.Itoa(res.result.port), strconv.FormatBool(*enableTLS), res.result.dataCenter, res.result.region, res.result.city, res.result.countary, res.result.iptype, res.result.latency})
 		}
 	}
 	writer.Flush()
@@ -469,4 +497,28 @@ func getDownloadSpeed(ip string, port int) float64 {
 	// 输出结果
 	fmt.Printf("IP %s 端口 %d 下载速度 %.0f kB/s\n", ip, port, speed)
 	return speed
+}
+
+
+
+// 获取客户端 IP 地址
+func getClientIP() (string, error) {
+	resp, err := http.Get("https://cf-ns.com/cdn-cgi/trace")
+	if err != nil {
+		return "", fmt.Errorf("无法获取客户端IP: %v", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("无法读取响应体: %v", err)
+	}
+
+	clientIPMatch :=regexp.MustCompile(`ip=(\d+\.\d+\.\d+\.\d+)`).FindStringSubmatch(string(body))
+
+	// fmt.Println("clientIPMatch is ", clientIPMatch)
+
+	clientIP := clientIPMatch[1]
+
+	return string(clientIP), nil
 }
