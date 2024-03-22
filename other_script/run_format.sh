@@ -20,3 +20,10 @@ for file in *.csv; do
         python /path/to/format-ipTest-result.py -i "$file" -o "format_${file}"
     fi
 done
+
+
+if [ ! -d format_result ]; then
+    mkdir format_result
+fi
+
+mv directory/format_* format_result/
