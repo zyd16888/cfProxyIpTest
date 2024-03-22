@@ -22,6 +22,7 @@ export QYWX_AM=""
 # 判断环境变量是否为空
 if [ -n "$QYWX_AM" ]; then
     # ./upx sync --strong ./result/
+    update_msg=$(./upx --auth sync --strong ./format_result / )
     send_msg="$update_msg"$'\n\n'"脚本运行时间: $((end_time - start_time))秒"
     python3 ../sendNotify.py -t "IP测速运行结果" -c "$send_msg"
 fi
