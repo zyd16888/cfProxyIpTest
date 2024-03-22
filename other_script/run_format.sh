@@ -30,8 +30,10 @@ if [ ! -d format_result/bak_"$timestamp" ]; then
     mkdir -p format_result/bak_"$timestamp"
 fi
 
-mv format_result/*_formatted.csv format_result/bak_"$timestamp"/
+mv format_result/*.csv format_result/bak_"$timestamp"/
 
 mv "$directory"/*_formatted.csv format_result/
 
-python3 ./filter-by-speed.py -i format_result -o format_result/filter-speed.csv -s 6000
+python3 ./filter-by-speed.py -i format_result -o filter-speed.csv -s 6000
+
+mv filter-speed.csv ./format_result/
