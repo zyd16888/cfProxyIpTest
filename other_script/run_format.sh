@@ -33,3 +33,5 @@ fi
 mv format_result/*_formatted.csv format_result/bak_"$timestamp"/
 
 mv "$directory"/*_formatted.csv format_result/
+
+python3 ./filter-by-speed.py -i format_result -o format_result/filter-speed.csv -s 6000
