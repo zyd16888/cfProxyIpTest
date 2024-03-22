@@ -24,4 +24,12 @@ if [ ! -d format_result ]; then
     mkdir format_result
 fi
 
+timestamp=$(date +"%Y%m%d%H%M%S")
+
+if [ ! -d format_result/bak_"$timestamp" ]; then
+    mkdir -p format_result/bak_"$timestamp"
+fi
+
+mv format_result/*_formatted.csv format_result/bak_"$timestamp"/
+
 mv "$directory"/*_formatted.csv format_result/
