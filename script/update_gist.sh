@@ -17,18 +17,8 @@ update_msg="$area 文件上传情况："
 # echo "output1 is $output1"
 # echo "output2 is $output2"
 
-# 判断输出是否包含"文件已成功更新到 Gist。"
-if [[ $output1 == *"文件已成功更新到 Gist。"* ]]; then
-    update_msg="$update_msg\n文件 ip-with-port 成功更新到 Gist。"
-else
-    update_msg="$update_msg\n文件 ip-with-port 更新到 Gist 失败. \n err: $output1 \n"
-fi
-
-if [[ $output2 == *"文件已成功更新到 Gist。"* ]]; then
-    update_msg="$update_msg\n文件 baipiao 成功更新到 Gist。"
-else
-    update_msg="$update_msg\n文件 baipiao 更新到 Gist 失败. \n err: $output2 \n"
-fi
+update_msg="$update_msg\n文件 ip-with-port 更新日志：\n$output1"
+update_msg="$update_msg\n文件 baipiao 更新日志：\n$output2"
 
 echo -e "$update_msg"
 
