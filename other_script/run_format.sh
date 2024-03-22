@@ -17,13 +17,14 @@ for file in *.csv; do
     # 检查文件是否存在
     if [ -f "$file" ]; then
         # 调用 Python 程序处理当前文件
-        python /path/to/format-ipTest-result.py -i "$file" -o "format_${file}"
+        python3 ../format-ipTest-result.py -i "$file" -o "format_${file}"
     fi
 done
 
+cd ../
 
 if [ ! -d format_result ]; then
     mkdir format_result
 fi
 
-mv directory/format_* format_result/
+mv "$directory"/format_* format_result/
