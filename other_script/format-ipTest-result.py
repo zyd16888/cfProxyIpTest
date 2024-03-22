@@ -31,7 +31,7 @@ def modify_csv(data, location_dict):
         row = {key: row[key] for key in row_keys}
         new_data.append(row)
 
-    city_keys = list(data[0].keys())
+    city_keys = list(new_data[0].keys())
     country_index = city_keys.index('国家')
     data=[]
     for row in new_data:
