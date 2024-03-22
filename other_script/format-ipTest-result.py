@@ -16,6 +16,7 @@ def modify_csv(data, location_dict):
         if iata in location_dict:
             row['国家'] = location_dict[iata]['cca2']
             row['速度(kb/s)'] = float(row['速度(MB/s)']) * 1024
+            row['IP类型'] = ""
             row.pop('速度(MB/s)')
 
     # 保存城市列的索引
@@ -30,7 +31,16 @@ def modify_csv(data, location_dict):
         row = {key: row[key] for key in row_keys}
         new_data.append(row)
 
-    return new_data
+    city_keys = list(data[0].keys())
+    country_index = city_keys.index('国家')
+    data=[]
+    for row in new_data:
+        row_keys = list(row.keys())
+        row_keys.insert(country_index + 1, 'IP类型')
+        row = {key: row[key] for key in row_keys}
+        data.append(row)
+
+    return data
 
 # 保存修改后的 CSV 文件
 def save_csv(data, output_file):
