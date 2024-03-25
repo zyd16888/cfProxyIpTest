@@ -26,7 +26,7 @@ fi
 
 # 获取 baipiaoIP
 echo "开始获取 baipiaoIP"
-wget -O baipiao.zip https://zip.baipiao.eu.org || { echo "Error: Failed to download baipiao.zip." >&2; exit 1; }
+wget -O baipiao.zip https://baipiao.test.upcdn.net || { echo "Error: Failed to download baipiao.zip." >&2; exit 1; }
 unzip -o baipiao.zip -d baipiao || { echo "Error: Failed to unzip baipiao.zip." >&2; exit 1; }
 
 # 格式化
