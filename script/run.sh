@@ -78,7 +78,7 @@ count=$(wc -l < ip-with-port.csv)
 echo "ip-with-port有效IP数量为 $count 个"
 run_msg="$run_msg\nip-with-port有效IP数量为 $count 个\n"
 
-echo "$run_msg" > npipe &
+echo -e "$run_msg" > npipe &
 
 # 备份 IP 文件
 if [ ! -d bak_ip ]; then
