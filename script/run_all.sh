@@ -3,6 +3,8 @@
 echo "开始运行脚本"
 start_time=$(date +"%Y%m%d%H%M%S")
 
+mkfifo -m 777 npipe
+
 bash script/run.sh
 
 export github_token="your github token"
@@ -18,6 +20,11 @@ echo "脚本运行时间: $[$end_time-$start_time]秒"
 # sond message
 echo -e "$update_msg"
 
+read run_msg < npipe
+
+echo "$run_msg"
+
+echo "发送通知"
 # 设置环境变量
 export QYWX_AM=""
 
