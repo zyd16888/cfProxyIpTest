@@ -43,7 +43,7 @@ rm -rf baipiao
 
 count=$(wc -l < baipiao.csv)
 echo "有效IP数量为 $count 个"
-export run_msg="$run_msg\n\n有效IP数量为 $count 个"
+export run_msg="$run_msg\n有效IP数量为 $count 个\n"
 
 # 备份 baipiao 文件
 if [ ! -d bak_baipiao ]; then
@@ -65,7 +65,7 @@ rm proxy.txt raw_ip.txt
 
 count=$(wc -l < ip.txt)
 echo "共获取到 $count 个IP"
-export run_msg="$run_msg\n\n ip-with-port共获取到 $count 个IP"
+export run_msg="$run_msg\nip-with-port共获取到 $count 个IP\n "
 
 # 添加端口号
 python3 ip-add-port.py -i ip.txt -o ip-with-port.txt -p 443 || { echo "Error: Failed to add port to IP addresses." >&2; exit 1; }
@@ -76,7 +76,7 @@ rm ip-with-port.txt
 
 count=$(wc -l < ip-with-port.csv)
 echo "ip-with-port有效IP数量为 $count 个"
-run_msg="$run_msg\n\nip-with-port有效IP数量为 $count 个"
+run_msg="$run_msg\nip-with-port有效IP数量为 $count 个\n"
 
 echo "$run_msg" > npipe &
 
