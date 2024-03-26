@@ -35,9 +35,15 @@ python3 baipiao-ipTest-format.py -i baipiao -o baipiao || { echo "Error: Failed 
 count=$(wc -l < baipiao/ips_with_ports.txt)
 echo "共获取到 $count 个IP"
 
+export run_msg="baipiao 共获取到 $count 个IP"
+
 chmod +x ./ipTest/ipTest
 ./ipTest/ipTest -file baipiao/ips_with_ports.txt -outfile baipiao.csv || { echo "Error: Failed to test baipiao IP addresses." >&2; exit 1; }
 rm -rf baipiao
+
+count=$(wc -l < baipiao.csv)
+echo "有效IP数量为 $count 个"
+export run_msg="$run_msg\n\n有效IP数量为 $count 个"
 
 # 备份 baipiao 文件
 if [ ! -d bak_baipiao ]; then
@@ -59,6 +65,7 @@ rm proxy.txt raw_ip.txt
 
 count=$(wc -l < ip.txt)
 echo "共获取到 $count 个IP"
+export run_msg="$run_msg\n\n ip-with-port共获取到 $count 个IP"
 
 # 添加端口号
 python3 ip-add-port.py -i ip.txt -o ip-with-port.txt -p 443 || { echo "Error: Failed to add port to IP addresses." >&2; exit 1; }
@@ -66,6 +73,10 @@ python3 ip-add-port.py -i ip.txt -o ip-with-port.txt -p 443 || { echo "Error: Fa
 # 测试 IP 地址
 ./ipTest/ipTest -file ip-with-port.txt -outfile ip-with-port.csv || { echo "Error: Failed to test IP addresses." >&2; exit 1; }
 rm ip-with-port.txt
+
+count=$(wc -l < ip-with-port.csv)
+echo "ip-with-port有效IP数量为 $count 个"
+export run_msg="$run_msg\n\nip-with-port有效IP数量为 $count 个"
 
 # 备份 IP 文件
 if [ ! -d bak_ip ]; then
