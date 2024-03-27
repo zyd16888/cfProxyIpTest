@@ -65,7 +65,7 @@ rm proxy.txt raw_ip.txt
 
 count=$(wc -l < ip.txt)
 echo "共获取到 $count 个IP"
-export run_msg="$run_msg"$'\n'"ip-with-port共获取到 $count 个IP"$'\n'
+export run_msg="$run_msg"$'\n'"ip-with-port共获取到 $count 个IP"
 
 # 添加端口号
 python3 ip-add-port.py -i ip.txt -o ip-with-port.txt -p 443 || { echo "Error: Failed to add port to IP addresses." >&2; exit 1; }
